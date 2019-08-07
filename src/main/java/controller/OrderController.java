@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import service.interfaces.*;
+import service.interfaces.BasketService;
+import service.interfaces.MailService;
+import service.interfaces.OrderService;
+import service.interfaces.ProductService;
+import service.interfaces.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -107,7 +111,7 @@ public class OrderController {
             ModelMap model,
             @RequestParam(name = "code") String userCode,
             @SessionAttribute("user") Optional<User> user,
-    HttpServletRequest request) {
+            HttpServletRequest request) {
         Order order = (Order) request.getSession().getAttribute("order");
         try {
             if (Objects.nonNull(order) && user.isPresent()

@@ -6,7 +6,11 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
 import service.interfaces.BasketService;
 import service.interfaces.ProductService;
 
@@ -39,7 +43,7 @@ public class ProductController {
         return "products";
     }
 
-    @RequestMapping(path = "/product", method = RequestMethod.GET)
+    @GetMapping(path = "/product")
     public String doGetEditProduct(Model model, @RequestParam(value = "id") String productId) {
         if (productId != null) {
             Optional<Product> product = productService.getProductById(Long.parseLong(productId));
@@ -50,7 +54,7 @@ public class ProductController {
         return "edit_product";
     }
 
-    @RequestMapping(path = {"/product"}, method = RequestMethod.POST)
+    @PostMapping(path = {"/product"})
     public String editProduct(
             Model model,
             @RequestParam(value = "id") String productId,
@@ -79,7 +83,7 @@ public class ProductController {
         return "products";
     }
 
-    @RequestMapping(path = "/admin/product/delete", method = RequestMethod.GET)
+    @GetMapping(path = "/admin/product/delete")
     public String deleteUser(@RequestParam(value = "id") String productId) {
         if (productId != null) {
             Optional<Product> product = productService.getProductById(Long.parseLong(productId));
@@ -90,12 +94,12 @@ public class ProductController {
         return "redirect:/user/products";
     }
 
-    @RequestMapping(path = "/add_product", method = RequestMethod.GET)
+    @GetMapping(path = "/add_product")
     public String doGetAddProduct() {
         return "add_product";
     }
 
-    @RequestMapping(path = "/add_product", method = RequestMethod.POST)
+    @PostMapping(path = "/add_product")
     public String addProduct(
             Model model,
             @RequestParam(value = "name") String name,
