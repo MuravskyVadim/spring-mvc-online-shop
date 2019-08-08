@@ -18,8 +18,8 @@ import javax.persistence.FetchType;
 
 @Setter
 @Getter
-@EqualsAndHashCode
 @ToString
+@EqualsAndHashCode
 
 @Entity
 @Table(name = "users")

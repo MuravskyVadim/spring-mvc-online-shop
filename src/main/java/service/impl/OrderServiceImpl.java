@@ -2,8 +2,8 @@ package service.impl;
 
 import dao.interfaces.OrderDao;
 import model.Order;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import service.interfaces.OrderService;
 

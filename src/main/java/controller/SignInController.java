@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import service.interfaces.UserService;
 import utils.HashUtil;
@@ -25,12 +24,12 @@ public class SignInController {
         this.userService = userService;
     }
 
-    @GetMapping(path = {"/"})
+    @GetMapping("/")
     public String signIn() {
         return "index";
     }
 
-    @PostMapping(value = "/login", params = {"email", "password"})
+    @PostMapping(path = "/login", params = {"email", "password"})
     public String login(
             Model model,
             @RequestParam(value = "email") String email,

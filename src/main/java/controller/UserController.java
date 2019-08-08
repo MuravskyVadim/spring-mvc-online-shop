@@ -13,12 +13,11 @@ import org.springframework.web.servlet.ModelAndView;
 import service.interfaces.UserService;
 import utils.HashUtil;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping(path = "/admin")
+@RequestMapping("/admin")
 @SessionAttributes("user")
 public class UserController {
 
@@ -29,14 +28,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(path = {"/users"})
+    @GetMapping("/users")
     public String allUsers(Model model) {
         List<User> allUsers = userService.getAllUsers();
         model.addAttribute("users", allUsers);
         return "users";
     }
 
-    @GetMapping(path = "/user")
+    @GetMapping("/user")
     public String setUser(Model model, @RequestParam(value = "id") String userId) {
         if (userId != null) {
             Optional<User> user = userService.getUserById(Long.parseLong(userId));
@@ -47,14 +46,14 @@ public class UserController {
         return "user";
     }
 
-    @PostMapping(path = "/user")
+    @PostMapping("/user")
     public String editUser(
             Model model,
             @RequestParam(value = "id") String userId,
             @RequestParam(value = "email") String email,
             @RequestParam(value = "password") String password,
             @RequestParam(value = "confirmPassword") String confirmPassword,
-            @RequestParam(value = "role") String role) throws IOException {
+            @RequestParam(value = "role") String role) {
         Optional<User> userById = userService.getUserById(Long.parseLong(userId));
         if (!email.isEmpty() && !password.isEmpty()
                 && !confirmPassword.isEmpty() && userById.isPresent()) {
@@ -77,7 +76,7 @@ public class UserController {
         return "redirect:/admin/users";
     }
 
-    @GetMapping(path = "/user/delete")
+    @GetMapping("/user/delete")
     public String deleteUser(@RequestParam(value = "id") String userId) {
         if (userId != null) {
             Optional<User> user = userService.getUserById(Long.parseLong(userId));
@@ -88,12 +87,12 @@ public class UserController {
         return "redirect:/admin/users";
     }
 
-    @GetMapping(path = "/register")
+    @GetMapping("/register")
     public String register() {
         return "/register";
     }
 
-    @PostMapping(path = "/register")
+    @PostMapping("/register")
     public ModelAndView registerUser(
             Model model,
             @RequestParam(value = "email") String email,

@@ -33,7 +33,9 @@ public class ProductController {
     }
 
     @GetMapping(path = "/user/products")
-    public String doGetAllProducts(HttpServletRequest request, @SessionAttribute("user") Optional<User> user) {
+    public String doGetAllProducts(
+            HttpServletRequest request,
+            @SessionAttribute("user") Optional<User> user) {
         if (user.isPresent()) {
             List<Product> allProducts = productService.getAllProducts();
             int productCountOfBasket = basketService.getAllProducts(user.get()).size();

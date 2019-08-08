@@ -4,8 +4,7 @@ import model.Product;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import service.interfaces.ProductService;
 import service.interfaces.UserService;
 import utils.HashUtil;
@@ -22,7 +21,7 @@ public class InitController {
         this.productService = productService;
     }
 
-    @RequestMapping(path = {"/init"}, method = RequestMethod.GET)
+    @GetMapping("/init")
     private void init() {
         String salt1 = HashUtil.getSalt();
         String salt2 = HashUtil.getSalt();

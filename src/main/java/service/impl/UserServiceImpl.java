@@ -1,10 +1,8 @@
 package service.impl;
 
 import dao.interfaces.UserDao;
-//import factory.UserDaoFactory;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import service.interfaces.UserService;
