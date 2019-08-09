@@ -23,10 +23,10 @@ public class BasketDaoHibImpl implements BasketDao {
     private static final Logger logger = Logger.getLogger(BasketDaoHibImpl.class);
     private static final String ADD_PRODUCT = "INSERT INTO baskets (product_id, product_name, " +
             "product_description, product_price, user_id) VALUES(?, ?, ?, ?, ?)";
-    private static final String GET_ALL_PRODUCTS = "FROM Basket WHERE user_id = :user_id";
+    private static final String GET_ALL_PRODUCTS = "FROM Basket WHERE user.id = :user_id";
     private static final String REMOVE_PRODUCT = "DELETE Basket " +
-            "WHERE product_id = :product_id AND user_id = :user_id";
-    private static final String CLEAR_BASKET = "DELETE FROM Basket WHERE user_id = :user_id";
+            "WHERE product_id = :product_id AND user.id = :user_id";
+    private static final String CLEAR_BASKET = "DELETE FROM Basket WHERE user.id = :user_id";
 
 
     @Autowired

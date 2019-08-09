@@ -26,10 +26,10 @@ public class Product {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "name", length = 30)
+    @Column(name = "name", length = 255)
     private String name;
 
-    @Column(name = "description", length = 30)
+    @Column(name = "description", length = 255)
     private String description;
 
     @Column(name = "price", columnDefinition="Double(10,2)")

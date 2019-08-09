@@ -4,10 +4,11 @@ import model.Product;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import service.interfaces.ProductService;
 import service.interfaces.UserService;
 import utils.HashUtil;
+
+import javax.annotation.PostConstruct;
 
 @Controller
 public class InitController {
@@ -21,7 +22,7 @@ public class InitController {
         this.productService = productService;
     }
 
-    @GetMapping("/init")
+    @PostConstruct
     private void init() {
         String salt1 = HashUtil.getSalt();
         String salt2 = HashUtil.getSalt();
