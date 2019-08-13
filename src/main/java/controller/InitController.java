@@ -3,10 +3,10 @@ package controller;
 import model.Product;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import service.interfaces.ProductService;
 import service.interfaces.UserService;
-import utils.HashUtil;
 
 import javax.annotation.PostConstruct;
 
@@ -15,24 +15,21 @@ public class InitController {
 
     private UserService userService;
     private ProductService productService;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public InitController(UserService userService, ProductService productService) {
+    public InitController(UserService userService, ProductService productService,
+                          BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userService = userService;
         this.productService = productService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @PostConstruct
     private void init() {
-        String salt1 = HashUtil.getSalt();
-        String salt2 = HashUtil.getSalt();
-        String salt3 = HashUtil.getSalt();
-        User admin = new User("admin@gmail.com", HashUtil.getHash("123", salt1), "admin");
-        User user = new User("user@gmail.com", HashUtil.getHash("123", salt2), "user");
-        User user2 = new User("test@gmail.com", HashUtil.getHash("123", salt3), "user");
-        admin.setSalt(salt1);
-        user.setSalt(salt2);
-        user2.setSalt(salt3);
+        User admin = new User("admin@gmail.com", bCryptPasswordEncoder.encode("123"), "ROLE_ADMIN");
+        User user = new User("user@gmail.com", bCryptPasswordEncoder.encode("123"), "ROLE_USER");
+        User user2 = new User("test@gmail.com", bCryptPasswordEncoder.encode("123"), "ROLE_USER");
         userService.addUser(admin);
         userService.addUser(user);
         userService.addUser(user2);

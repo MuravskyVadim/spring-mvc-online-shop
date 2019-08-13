@@ -2,6 +2,7 @@ package controller;
 
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,21 +12,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import service.interfaces.UserService;
-import utils.HashUtil;
 
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
-@SessionAttributes("user")
+//@SessionAttributes("user")
 public class UserController {
 
     private UserService userService;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userService = userService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @GetMapping("/users")
@@ -58,10 +60,8 @@ public class UserController {
         if (!email.isEmpty() && !password.isEmpty()
                 && !confirmPassword.isEmpty() && userById.isPresent()) {
             if (password.equals(confirmPassword)) {
-                String salt = HashUtil.getSalt();
-                String hashPassword = HashUtil.getHash(password, salt);
+                String hashPassword = bCryptPasswordEncoder.encode(password);
                 User newUser = new User(userById.get().getId(), email, hashPassword, role);
-                newUser.setSalt(salt);
                 userService.updateUser(newUser);
             } else {
                 model.addAttribute("user", userById.get());
@@ -103,9 +103,7 @@ public class UserController {
                 && !confirmPassword.isEmpty() && !role.isEmpty()) {
             if (!userService.isUserExist(email)) {
                 if (password.equals(confirmPassword)) {
-                    String salt = HashUtil.getSalt();
-                    User user = new User(email, HashUtil.getHash(password, salt), role);
-                    user.setSalt(salt);
+                    User user = new User(email, bCryptPasswordEncoder.encode(password), role);
                     userService.addUser(user);
                     return new ModelAndView("redirect:/admin/users");
                 } else {

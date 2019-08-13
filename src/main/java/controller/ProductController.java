@@ -4,6 +4,7 @@ import model.Product;
 import model.User;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import service.interfaces.BasketService;
 import service.interfaces.ProductService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,13 +37,12 @@ public class ProductController {
     @GetMapping(path = "/user/products")
     public String doGetAllProducts(
             HttpServletRequest request,
-            @SessionAttribute("user") Optional<User> user) {
-        if (user.isPresent()) {
-            List<Product> allProducts = productService.getAllProducts();
-            int productCountOfBasket = basketService.getAllProducts(user.get()).size();
-            request.setAttribute("products", allProducts);
-            request.setAttribute("productCountOfBasket", productCountOfBasket);
-        }
+            @AuthenticationPrincipal User user) {
+        List<Product> allProducts = productService.getAllProducts();
+        int productCountOfBasket = basketService.getAllProducts(user).size();
+        request.setAttribute("products", allProducts);
+        request.setAttribute("user", user);
+        request.setAttribute("productCountOfBasket", productCountOfBasket);
         return "products";
     }
 
