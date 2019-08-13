@@ -1,9 +1,7 @@
 package controller;
 
 import model.Product;
-import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import service.interfaces.ProductService;
 import service.interfaces.UserService;
@@ -15,25 +13,18 @@ public class InitController {
 
     private UserService userService;
     private ProductService productService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public InitController(UserService userService, ProductService productService,
-                          BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public InitController(UserService userService, ProductService productService) {
         this.userService = userService;
         this.productService = productService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @PostConstruct
     private void init() {
-        User admin = new User("admin@gmail.com", bCryptPasswordEncoder.encode("123"), "ROLE_ADMIN");
-        User user = new User("user@gmail.com", bCryptPasswordEncoder.encode("123"), "ROLE_USER");
-        User user2 = new User("test@gmail.com", bCryptPasswordEncoder.encode("123"), "ROLE_USER");
-        userService.addUser(admin);
-        userService.addUser(user);
-        userService.addUser(user2);
-
+        userService.addUser("admin@gmail.com", "123", "ROLE_ADMIN");
+        userService.addUser("user@gmail.com", "123", "ROLE_USER");
+        userService.addUser("test@gmail.com", "123", "ROLE_USER");
         Product product1 = new Product("Phone", "iPhone X 128G", 699.0);
         Product product2 = new Product("Watch", "wrist watch", 399.0);
         Product product3 = new Product("MacBook", "laptop", 2699.0);

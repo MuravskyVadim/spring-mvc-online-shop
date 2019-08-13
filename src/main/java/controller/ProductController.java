@@ -34,7 +34,7 @@ public class ProductController {
         this.basketService = basketService;
     }
 
-    @GetMapping(path = "/user/products")
+    @GetMapping(path = {"/user/products", "/admin/products"})
     public String doGetAllProducts(
             HttpServletRequest request,
             @AuthenticationPrincipal User user) {

@@ -16,7 +16,6 @@ import java.util.Optional;
 public class UserDaoHibImpl implements UserDao {
 
     private static final Logger logger = Logger.getLogger(UserDaoHibImpl.class);
-
     private SessionFactory sessionFactory;
 
     @Autowired

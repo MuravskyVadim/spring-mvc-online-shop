@@ -2,14 +2,12 @@ package controller;
 
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import service.interfaces.UserService;
 
@@ -18,16 +16,13 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
-//@SessionAttributes("user")
 public class UserController {
 
     private UserService userService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @GetMapping("/users")
@@ -60,9 +55,7 @@ public class UserController {
         if (!email.isEmpty() && !password.isEmpty()
                 && !confirmPassword.isEmpty() && userById.isPresent()) {
             if (password.equals(confirmPassword)) {
-                String hashPassword = bCryptPasswordEncoder.encode(password);
-                User newUser = new User(userById.get().getId(), email, hashPassword, role);
-                userService.updateUser(newUser);
+                userService.updateUser(userById.get().getId(), email, password, role);
             } else {
                 model.addAttribute("user", userById.get());
                 model.addAttribute("message", "Passwords not equals! Try again.");
@@ -103,8 +96,7 @@ public class UserController {
                 && !confirmPassword.isEmpty() && !role.isEmpty()) {
             if (!userService.isUserExist(email)) {
                 if (password.equals(confirmPassword)) {
-                    User user = new User(email, bCryptPasswordEncoder.encode(password), role);
-                    userService.addUser(user);
+                    userService.addUser(email, password, role);
                     return new ModelAndView("redirect:/admin/users");
                 } else {
                     model.addAttribute("message", "Passwords not equals! Try again...");
