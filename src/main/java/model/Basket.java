@@ -51,8 +51,7 @@ public class Basket {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
-            name = "product_basket",
-            joinColumns = @JoinColumn(name = "basket_id"),
+            name = "product_basket", joinColumns = @JoinColumn(name = "basket_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> productList;
 

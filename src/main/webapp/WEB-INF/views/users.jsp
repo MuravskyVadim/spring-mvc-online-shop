@@ -36,7 +36,7 @@
         </table>
     </form>
     <p>
-        <input type="button" class="inline" value="Goods" onClick='location.href="/user/products"'>
+        <input type="button" class="inline" value="Goods" onClick='location.href="/admin/products"'>
         <input type="button" class="inline" value="Add user" onClick='location.href="/admin/register"'>
         <input type="button" class="inline" value="Exit" onClick='location.href="/exit"'>
     </p>

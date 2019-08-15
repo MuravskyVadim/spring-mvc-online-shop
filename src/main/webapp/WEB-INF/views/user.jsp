@@ -20,8 +20,8 @@
             <input type="password" name="confirmPassword"/>
         </p>
         <p>
-            <label><input type="radio" name="role" value="admin">admin</label>
-            <label><input type="radio" name="role" value="user" checked="true">user</label><br/>
+            <label><input type="radio" name="role" value="ROLE_ADMIN">admin</label>
+            <label><input type="radio" name="role" value="ROLE_USER" checked="true">user</label><br/>
         </p>
         ${message}
         <p>

@@ -2,6 +2,7 @@ package controller;
 
 import model.Product;
 import model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ public class BasketController {
     private ProductService productService;
     private UserService userService;
 
+    @Autowired
     public BasketController(BasketService basketService,
                             ProductService productService, UserService userService) {
         this.basketService = basketService;
@@ -30,9 +32,8 @@ public class BasketController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/user/product/by")
-    public void byProduct(
-            Model model,
+    @GetMapping("/user/product/buy")
+    public void buyProduct(
             @RequestParam(value = "userId") String userId,
             @RequestParam(value = "productId") String productId,
             HttpServletRequest request, HttpServletResponse response)

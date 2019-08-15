@@ -4,6 +4,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.Entity;
@@ -15,15 +18,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.CascadeType;
 import javax.persistence.OneToOne;
 import javax.persistence.FetchType;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Setter
 @Getter
-@EqualsAndHashCode
 @ToString
+@EqualsAndHashCode
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,11 +46,8 @@ public class User {
     private String role;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name="code_id")
+    @JoinColumn(name = "code_id")
     private Code code;
-
-    @Column(name = "salt")
-    private String salt;
 
     public User() {
     }
@@ -60,5 +63,37 @@ public class User {
         this.email = email;
         this.password = password;
         this.role = role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> list = new ArrayList<>();
+        list.add(new SimpleGrantedAuthority(getRole()));
+        return list;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

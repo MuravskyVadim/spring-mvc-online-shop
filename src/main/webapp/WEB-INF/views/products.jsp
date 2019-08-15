@@ -1,5 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>All products</title>
@@ -10,14 +9,14 @@
         <table align="top" border="1" cellpadding="4" cellspacing="0">
             <caption>Products list</caption>
             <tr>
-                <c:if test="${user.role == 'admin'}">
+                <c:if test="${user.role == 'ROLE_ADMIN'}">
                     <th>Id</th>
                 </c:if>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Price</th>
                 <c:choose>
-                    <c:when test="${user.role == 'admin'}">
+                    <c:when test="${user.role == 'ROLE_ADMIN'}">
                         <th></th>
                         <th></th>
                     </c:when>
@@ -28,14 +27,14 @@
             </tr>
             <c:forEach items="${products}" var="product">
                 <tr>
-                    <c:if test="${user.role == 'admin'}">
+                    <c:if test="${user.role == 'ROLE_ADMIN'}">
                         <td>${product.id}</td>
                     </c:if>
                     <td>${product.name}</td>
                     <td>${product.description}</td>
                     <td>${product.price}</td>
                     <c:choose>
-                        <c:when test="${user.role=='admin'}">
+                        <c:when test="${user.role=='ROLE_ADMIN'}">
                             <td>
                                 <input type="button" class="inline" value="edit"
                                        onClick='location.href="/product?id=${product.id}"'>
@@ -47,8 +46,9 @@
                         </c:when>
                         <c:otherwise>
                             <td>
-                                <input type="button" class="inline" value="buy"onClick='location.href="/user/product/by" +
-                                        "?productId=${product.id}&userId=${user.id}"'>
+                                <input type="button" class="inline" value="buy"
+                                       onClick='location.href="/user/product/buy" +
+                                               "?productId=${product.id}&userId=${user.id}"'>
                             </td>
                         </c:otherwise>
                     </c:choose>
@@ -57,7 +57,7 @@
         </table>
     </form>
     <c:choose>
-        <c:when test="${user.role=='admin'}">
+        <c:when test="${user.role=='ROLE_ADMIN'}">
             <input type="button" class="inline" value="Users" onClick='location.href="/admin/users"'>
             <input type="button" class="inline" value="Add item" onClick='location.href="/add_product"'>
         </c:when>

@@ -7,13 +7,18 @@ import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
-import service.interfaces.*;
+import service.interfaces.BasketService;
+import service.interfaces.MailService;
+import service.interfaces.OrderService;
+import service.interfaces.ProductService;
+import service.interfaces.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,6 +27,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/user")
 @SessionAttributes("user")
 public class OrderController {
 
@@ -42,7 +48,7 @@ public class OrderController {
         this.mailService = mailService;
     }
 
-    @GetMapping(value = "/user/checkout")
+    @GetMapping(value = "/checkout")
     public ModelAndView showProductsInBasket(
             @RequestParam(value = "userId") String userId, ModelMap model) {
         Optional<User> user = userService.getUserById(Long.parseLong(userId));
@@ -54,7 +60,7 @@ public class OrderController {
         return new ModelAndView("checkout", model);
     }
 
-    @GetMapping(path = "/user/basket/product/delete")
+    @GetMapping(path = "/basket/product/delete")
     public String deleteProductFromBasket(
             @SessionAttribute("user") Optional<User> user,
             @RequestParam(value = "id") String productId,
@@ -69,7 +75,7 @@ public class OrderController {
         return "redirect:/user/checkout";
     }
 
-    @PostMapping("/user/checkout")
+    @PostMapping("/checkout")
     public String sendCode(
             ModelMap model,
             @RequestParam("firstName") String firstName,
@@ -102,12 +108,12 @@ public class OrderController {
         }
     }
 
-    @PostMapping("/user/code")
+    @PostMapping("/code")
     public ModelAndView confirmCode(
             ModelMap model,
             @RequestParam(name = "code") String userCode,
             @SessionAttribute("user") Optional<User> user,
-    HttpServletRequest request) {
+            HttpServletRequest request) {
         Order order = (Order) request.getSession().getAttribute("order");
         try {
             if (Objects.nonNull(order) && user.isPresent()
